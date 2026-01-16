@@ -22,6 +22,8 @@ const urlsToCache = [
   './modules/auth.js',
   './modules/auth-ui.js',
   './modules/security.js',
+  './firebase-config.js',
+  './modules/cloud-sync.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
