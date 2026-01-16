@@ -1,21 +1,25 @@
 // ===== Firebase Configuration =====
 // This file contains Firebase setup for cloud synchronization
 
-// Firebase configuration
-// IMPORTANT: Replace these with your actual Firebase project credentials
+// DEMO MODE: App works without Firebase!
+// To enable cloud sync, replace these values with YOUR Firebase credentials
 // Get them from: https://console.firebase.google.com
+
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    // REPLACE THESE WITH YOUR FIREBASE PROJECT CREDENTIALS:
+    apiKey: "DEMO-KEY-REPLACE-WITH-YOUR-FIREBASE-API-KEY",
+    authDomain: "DEMO-PROJECT.firebaseapp.com",
+    projectId: "DEMO-PROJECT-ID",
+    storageBucket: "DEMO-PROJECT.appspot.com",
+    messagingSenderId: "000000000000",
+    appId: "1:000000000000:web:demo123456789"
 };
+
 
 // Check if Firebase is configured
 const isFirebaseConfigured = () => {
-    return firebaseConfig.apiKey !== "YOUR_API_KEY_HERE";
+    return firebaseConfig.apiKey !== "DEMO-KEY-REPLACE-WITH-YOUR-FIREBASE-API-KEY" 
+        && !firebaseConfig.apiKey.includes("DEMO");
 };
 
 // Initialize Firebase (if configured)
