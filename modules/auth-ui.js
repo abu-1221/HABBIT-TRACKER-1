@@ -1,4 +1,5 @@
 // ===== Auth UI Manager - Login/Signup Interface =====
+// FIXED VERSION - Properly handles async authentication
 
 const AuthUI = {
     renderAuthScreen() {
@@ -121,52 +122,94 @@ const AuthUI = {
             this.clearMessage();
         });
 
-        // Login form submission
-        loginForm.addEventListener('submit', (e) => {
+        // Login form submission - FIXED: Now properly handles async
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
+            const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
 
-            const result = AuthModule.login(email, password);
-            
-            if (result.success) {
-                this.showMessage(result.message, 'success');
-                setTimeout(() => {
-                    this.hideAuthScreen();
-                    window.location.reload(); // Reload to initialize with user data
-                }, 1000);
-            } else {
-                this.showMessage(result.message, 'error');
+            if (!email || !password) {
+                this.showMessage('Please enter email and password', 'error');
+                return;
+            }
+
+            const loginBtn = document.getElementById('login-btn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<span>Signing in...</span>';
+            loginBtn.disabled = true;
+
+            try {
+                const result = await AuthModule.login(email, password);
+                
+                if (result && result.success) {
+                    this.showMessage(result.message || 'Login successful!', 'success');
+                    setTimeout(() => {
+                        this.hideAuthScreen();
+                        window.location.reload(); // Reload to initialize with user data
+                    }, 1000);
+                } else {
+                    this.showMessage(result?.message || 'Login failed. Please check your credentials.', 'error');
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                this.showMessage('An error occurred during login. Please try again.', 'error');
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
             }
         });
 
-        // Signup form submission
-        signupForm.addEventListener('submit', (e) => {
+        // Signup form submission - FIXED: Now properly handles async
+        signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+            if (!email || !password) {
+                this.showMessage('Please enter email and password', 'error');
+                return;
+            }
 
             if (password !== confirmPassword) {
                 this.showMessage('Passwords do not match', 'error');
                 return;
             }
 
-            const result = AuthModule.signup(email, password, name);
-            
-            if (result.success) {
-                this.showMessage(result.message, 'success');
-                // Switch to login after successful signup
-                setTimeout(() => {
-                    document.getElementById('signup-email').value = '';
-                    document.getElementById('signup-password').value = '';
-                    document.getElementById('signup-confirm-password').value = '';
-                    document.getElementById('login-email').value = email;
-                    toggleLink.click(); // Switch to login mode
-                }, 1500);
-            } else {
-                this.showMessage(result.message, 'error');
+            const signupBtn = document.getElementById('signup-btn');
+            const originalText = signupBtn.innerHTML;
+            signupBtn.innerHTML = '<span>Creating account...</span>';
+            signupBtn.disabled = true;
+
+            try {
+                const result = await AuthModule.signup(email, password, name);
+                
+                if (result && result.success) {
+                    this.showMessage(result.message || 'Account created! Please login.', 'success');
+                    // Auto-login after successful signup
+                    setTimeout(async () => {
+                        const loginResult = await AuthModule.login(email, password);
+                        if (loginResult && loginResult.success) {
+                            this.hideAuthScreen();
+                            window.location.reload();
+                        } else {
+                            // Switch to login mode
+                            document.getElementById('login-email').value = email;
+                            toggleLink.click();
+                        }
+                    }, 1500);
+                } else {
+                    this.showMessage(result?.message || 'Signup failed. Please try again.', 'error');
+                    signupBtn.innerHTML = originalText;
+                    signupBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                this.showMessage('An error occurred during signup. Please try again.', 'error');
+                signupBtn.innerHTML = originalText;
+                signupBtn.disabled = false;
             }
         });
     },
@@ -183,8 +226,10 @@ const AuthUI = {
 
     clearMessage() {
         const messageContainer = document.getElementById('auth-message');
-        messageContainer.className = '';
-        messageContainer.innerHTML = '';
+        if (messageContainer) {
+            messageContainer.className = '';
+            messageContainer.innerHTML = '';
+        }
     },
 
     hideAuthScreen() {
