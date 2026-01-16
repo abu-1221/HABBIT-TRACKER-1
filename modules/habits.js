@@ -289,6 +289,11 @@ const HabitsModule = {
                 Storage.updateTodayStats({ habitsCompleted: (stats.habitsCompleted || 0) + 1 });
                 
                 App.showToast(`${habit.name} completed! 🔥`, 'success');
+                
+                // Show next event notification
+                if (typeof NotificationsModule !== 'undefined') {
+                    NotificationsModule.notifyNextEvent('habit', habit);
+                }
             } else {
                 habit.completions.splice(todayIndex, 1);
                 App.showToast('Habit unmarked', 'info');

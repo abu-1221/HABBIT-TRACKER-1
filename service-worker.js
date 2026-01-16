@@ -1,11 +1,13 @@
-// Service Worker for AI-POS - Offline Support
-const CACHE_NAME = 'ai-pos-v1';
+// Service Worker for AI-POS - Enhanced Offline Support
+const CACHE_NAME = 'ai-pos-v2';
 const urlsToCache = [
   './',
   './index.html',
   './style.css',
   './components.css',
   './components2.css',
+  './mobile.css',
+  './auth.css',
   './app.js',
   './modules/storage.js',
   './modules/ai-engine.js',
@@ -15,6 +17,13 @@ const urlsToCache = [
   './modules/analytics.js',
   './modules/assistant.js',
   './modules/mood.js',
+  './modules/notifications.js',
+  './modules/auth.js',
+  './modules/auth-ui.js',
+  './modules/security.js',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.jsdelivr.net/npm/chart.js',
   'https://unpkg.com/lucide@latest/dist/umd/lucide.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap'

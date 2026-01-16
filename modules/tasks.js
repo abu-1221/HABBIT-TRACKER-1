@@ -258,6 +258,11 @@ const TasksModule = {
             if (task.completed) {
                 const stats = Storage.getTodayStats();
                 Storage.updateTodayStats({ tasksCompleted: (stats.tasksCompleted || 0) + 1 });
+                
+                // Show next event notification
+                if (typeof NotificationsModule !== 'undefined') {
+                    NotificationsModule.notifyNextEvent('task', task);
+                }
             }
             
             this.renderTasks();

@@ -130,7 +130,20 @@ const NotificationsModule = {
 
         const timeUntil = scheduledTime - now;
         
-        // Schedule notification
+        // Schedule 5-minute pre-reminder
+        const fiveMinBefore = timeUntil - (5 * 60 * 1000);
+        if (fiveMinBefore > 0) {
+            setTimeout(() => {
+                this.showNotification(
+                    `⏱️ Coming Up: ${habit.name}`,
+                    `In 5 minutes at ${habit.specificTime}. Get ready!`,
+                    `habit-pre-${habit.id}`,
+                    { type: 'habit', id: habit.id, pre: true }
+                );
+            }, fiveMinBefore);
+        }
+        
+        // Schedule main notification
         setTimeout(() => {
             this.showNotification(
                 `⏰ Time for: ${habit.name}`,
@@ -138,6 +151,22 @@ const NotificationsModule = {
                 `habit-${habit.id}`,
                 { type: 'habit', id: habit.id }
             );
+            
+            // Schedule follow-up if not completed after 10 minutes
+            setTimeout(() => {
+                const today = new Date().toDateString();
+                const habits = Storage.get(Storage.KEYS.HABITS) || [];
+                const habitData = habits.find(h => h.id === habit.id);
+                
+                if (habitData && !habitData.completions?.includes(today)) {
+                    this.showNotification(
+                        `🔔 Reminder: ${habit.name}`,
+                        `Haven't completed yet. Don't break your streak!`,
+                        `habit-reminder-${habit.id}`,
+                        { type: 'habit', id: habit.id, reminder: true }
+                    );
+                }
+            }, 10 * 60 * 1000);
         }, timeUntil);
     },
 
@@ -192,11 +221,11 @@ const NotificationsModule = {
             
             // Notify 1 day before deadline
             const oneDayBefore = timeUntil - (24 * 60 * 60 * 1000);
-            if (oneDayBefore > 0 && oneDayBefore < 60 * 60 * 1000) { // Within next hour
+            if (oneDayBefore > 0 && oneDayBefore < 60 * 60 * 1000) {
                 setTimeout(() => {
                     this.showNotification(
                         `📌 Task Due Tomorrow: ${task.title}`,
-                        `Priority: ${task.priority.toUpperCase()}`,
+                        `Priority: ${task.priority.toUpperCase()}. Complete it soon!`,
                         `task-${task.id}`,
                         { type: 'task', id: task.id }
                     );
@@ -209,23 +238,141 @@ const NotificationsModule = {
                 setTimeout(() => {
                     this.showNotification(
                         `⚠️ Task Due Soon: ${task.title}`,
-                        `Due in 1 hour! Priority: ${task.priority.toUpperCase()}`,
+                        `Only 1 hour left! Priority: ${task.priority.toUpperCase()}`,
                         `task-${task.id}`,
                         { type: 'task', id: task.id }
                     );
                 }, oneHourBefore);
             }
             
+            // Notify 5 minutes before deadline
+            const fiveMinBefore = timeUntil - (5 * 60 * 1000);
+            if (fiveMinBefore > 0 && fiveMinBefore < 60 * 60 * 1000) {
+                setTimeout(() => {
+                    this.showNotification(
+                        `🚨 URGENT: ${task.title}`,
+                        `Due in 5 minutes! Complete NOW!`,
+                        `task-urgent-${task.id}`,
+                        { type: 'task', id: task.id, urgent: true }
+                    );
+                }, fiveMinBefore);
+            }
+            
             // Notify when overdue
             if (timeUntil < 0 && Math.abs(timeUntil) < 60 * 60 * 1000) {
                 this.showNotification(
                     `🚨 Task Overdue: ${task.title}`,
-                    `This task is now overdue!`,
-                    `task-${task.id}`,
-                    { type: 'task', id: task.id }
+                    `This task is now overdue! Complete ASAP!`,
+                    `task-overdue-${task.id}`,
+                    { type: 'task', id: task.id, overdue: true }
                 );
             }
         });
+    },
+
+    // Show next upcoming event
+    showNextEvent() {
+        const habits = Storage.get(Storage.KEYS.HABITS) || [];
+        const tasks = Storage.get(Storage.KEYS.TASKS) || [];
+        const now = new Date();
+        const today = now.toDateString();
+        
+        // Find next habit
+        let nextHabit = null;
+        let nextHabitTime = null;
+        
+        habits.forEach(habit => {
+            if (habit.completions?.includes(today)) return; // Already completed
+            
+            if (habit.specificTime) {
+                const [hours, minutes] = habit.specificTime.split(':').map(Number);
+                const habitTime = new Date();
+                habitTime.setHours(hours, minutes, 0, 0);
+                
+                if (habitTime > now) {
+                    if (!nextHabitTime || habitTime < nextHabitTime) {
+                        nextHabitTime = habitTime;
+                        nextHabit = habit;
+                    }
+                }
+            }
+        });
+        
+        // Find next task
+        let nextTask = null;
+        let nextTaskTime = null;
+        
+        tasks.forEach(task => {
+            if (task.completed || !task.deadline) return;
+            
+            const deadline = new Date(task.deadline);
+            if (deadline > now) {
+                if (!nextTaskTime || deadline < nextTaskTime) {
+                    nextTaskTime = deadline;
+                    nextTask = task;
+                }
+            }
+        });
+        
+        // Show next event
+        if (nextHabit && (!nextTask || nextHabitTime < nextTaskTime)) {
+            const timeUntil = Math.floor((nextHabitTime - now) / (60 * 1000));
+            return {
+                type: 'habit',
+                name: nextHabit.name,
+                time: nextHabit.specificTime,
+                minutesUntil: timeUntil
+            };
+        } else if (nextTask) {
+            const timeUntil = Math.floor((nextTaskTime - now) / (60 * 1000));
+            return {
+                type: 'task',
+                name: nextTask.title,
+                deadline: nextTask.deadline,
+                minutesUntil: timeUntil
+            };
+        }
+        
+        return null;
+    },
+
+    // Notify about next event after completion
+    notifyNextEvent(completedType, completedItem) {
+        const nextEvent = this.showNextEvent();
+        
+        if (nextEvent) {
+            setTimeout(() => {
+                if (nextEvent.type === 'habit') {
+                    this.showNotification(
+                        `✅ Great! Next up: ${nextEvent.name}`,
+                        `Scheduled at ${nextEvent.time} (in ${nextEvent.minutesUntil} min)`,
+                        'next-event',
+                        { type: 'next-event', data: nextEvent }
+                    );
+                } else {
+                    const hours = Math.floor(nextEvent.minutesUntil / 60);
+                    const mins = nextEvent.minutesUntil % 60;
+                    const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                    
+                    this.showNotification(
+                        `✅ Great! Next task: ${nextEvent.name}`,
+                        `Due in ${timeStr}`,
+                        'next-event',
+                        { type: 'next-event', data: nextEvent }
+                    );
+                }
+            }, 2000); // Small delay after completion
+        } else {
+            // No more events today
+            setTimeout(() => {
+                this.showNotification(
+                    `🎉 All Done for Today!`,
+                    `You've completed everything! Great job!`,
+                    'all-done',
+                    { type: 'completion' }
+                );
+            }, 2000);
+        }
     },
 
     // Daily morning summary
