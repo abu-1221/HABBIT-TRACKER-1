@@ -48,7 +48,13 @@ const AuthModule = {
     },
 
     // Register new user
-    signup(email, password, name) {
+    async signup(email, password, name) {
+        // Try cloud sync first if available
+        if (typeof CloudSync !== 'undefined' && CloudSync.isEnabled) {
+            return await CloudSync.signup(email, password, name);
+        }
+
+        // Fallback to local authentication
         if (!email || !password) {
             return { success: false, message: 'Email and password are required' };
         }
@@ -87,7 +93,13 @@ const AuthModule = {
     },
 
     // Login existing user
-    login(email, password) {
+    async login(email, password) {
+        // Try cloud sync first if available
+        if (typeof CloudSync !== 'undefined' && CloudSync.isEnabled) {
+            return await CloudSync.login(email, password);
+        }
+
+        // Fallback to local authentication
         if (!email || !password) {
             return { success: false, message: 'Email and password are required' };
         }
@@ -125,7 +137,12 @@ const AuthModule = {
     },
 
     // Logout user
-    logout() {
+    async logout() {
+        // Try cloud sync first if available
+        if (typeof CloudSync !== 'undefined' && CloudSync.isEnabled) {
+            await CloudSync.logout();
+        }
+
         localStorage.removeItem('aipos_session');
         this.currentUser = null;
         

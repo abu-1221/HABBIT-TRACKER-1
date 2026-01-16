@@ -64,7 +64,14 @@ const Storage = {
             // If user is logged in, save to user-specific storage
             if (typeof AuthModule !== 'undefined' && AuthModule.isLoggedIn()) {
                 const keyName = key.replace('aipos_', '');
-                return AuthModule.saveUserItem(keyName, value);
+                const result = AuthModule.saveUserItem(keyName, value);
+                
+                // Trigger cloud sync if available
+                if (typeof CloudSync !== 'undefined' && CloudSync.isEnabled) {
+                    CloudSync.syncToCloud().catch(err => console.error('Cloud sync error:', err));
+                }
+                
+                return result;
             }
             
             // Fallback to regular storage

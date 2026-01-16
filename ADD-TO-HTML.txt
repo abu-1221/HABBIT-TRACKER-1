@@ -1,0 +1,44 @@
+<!-- ========================================= -->
+<!-- ADD THESE LINES TO index.html -->
+<!-- ========================================= -->
+
+<!-- STEP 1: Add these Firebase scripts in the <head> section, AFTER the Chart.js and Lucide scripts -->
+
+<!-- Firebase SDK for Cloud Sync -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+
+<!-- STEP 2: Add these configuration scripts BEFORE <script src="modules/auth.js"> -->
+
+<!-- Firebase Configuration & Cloud Sync -->
+<script src="firebase-config.js"></script>
+<script src="modules/cloud-sync.js"></script>
+
+
+<!-- ========================================= -->
+<!-- COMPLETE EXAMPLE: -->
+<!-- ========================================= -->
+<!--
+In your index.html, the scripts section should look like this:
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Firebase SDK for Cloud Sync (Optional) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Configuration & Cloud Sync -->
+    <script src="firebase-config.js"></script>
+    <script src="modules/cloud-sync.js"></script>
+    
+    <!-- Original Scripts (keep these as they are) -->
+    <script src="modules/auth.js"></script>
+    <script src="modules/auth-ui.js"></script>
+    <script src="modules/storage.js"></script>
+    <script src="modules/ai-engine.js"></script>
+    <!-- ... rest of your scripts ... -->
+-->
