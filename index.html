@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="components.css" />
     <link rel="stylesheet" href="components2.css" />
     <link rel="stylesheet" href="mobile.css" />
+    <link rel="stylesheet" href="mobile-responsive.css" />
     <link rel="stylesheet" href="auth.css" />
   </head>
   <body>
@@ -40,6 +41,14 @@
         <p class="loader-subtext">Loading cognitive modules...</p>
       </div>
     </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button id="menu-toggle" class="menu-toggle" aria-label="Toggle Menu" style="display: none;">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
     <!-- Main Application -->
     <div id="app" class="app hidden">

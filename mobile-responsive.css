@@ -1,0 +1,764 @@
+/* ===== Professional Mobile Responsive Design ===== */
+
+/* Mobile Breakpoints */
+/* 
+  xs: 0-480px (Small phones)
+  sm: 481-768px (Phones/Phablets)
+  md: 769-1024px (Tablets)
+  lg: 1025px+ (Desktop)
+*/
+
+/* ========== SMALL PHONES (0-480px) ========== */
+@media (max-width: 480px) {
+    /* Main Layout Adjustments */
+    .app-container {
+        padding: 0;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2000;
+        box-shadow: none;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 0 !important;
+        padding: var(--spacing-sm);
+        width: 100%;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        padding: 0.75rem var(--spacing-sm);
+        height: 56px;
+    }
+
+    .top-bar h1 {
+        font-size: 1.25rem;
+    }
+
+    .time-display {
+        font-size: 0.875rem;
+    }
+
+    /* Menu Toggle Button */
+    .menu-toggle {
+        display: block !important;
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 1999;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        border: none;
+        color: white;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .menu-toggle:active {
+        transform: scale(0.95);
+    }
+
+    .menu-toggle svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Overlay for Sidebar */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    /* Dashboard Stats */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--spacing-sm);
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    /* Widgets */
+    .widget {
+        padding: 1rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .widget-header h3 {
+        font-size: 1rem;
+    }
+
+    /* Habits List */
+    .habits-list {
+        gap: var(--spacing-sm);
+    }
+
+    .habit-card {
+        padding: 0.875rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .habit-card .habit-check-wrapper {
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+    }
+
+    .habit-check {
+        width: 44px;
+        height: 44px;
+    }
+
+    .habit-info {
+        width: calc(100% - 60px);
+    }
+
+    .habit-name {
+        font-size: 0.95rem;
+    }
+
+    .habit-meta {
+        font-size: 0.75rem;
+    }
+
+    /* Tasks */
+    .tasks-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .task-card {
+        padding: 0.875rem;
+    }
+
+    .task-title {
+        font-size: 0.95rem;
+    }
+
+    .task-meta {
+        font-size: 0.75rem;
+    }
+
+    /* Focus Timer */
+    .focus-circle {
+        width: 200px;
+        height: 200px;
+    }
+
+    .focus-time {
+        font-size: 2.5rem;
+    }
+
+    .focus-label {
+        font-size: 0.875rem;
+    }
+
+    .timer-controls {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        width: 100%;
+    }
+
+    .timer-controls .btn {
+        width: 100%;
+    }
+
+    /* Modals */
+    .modal-content {
+        width: calc(100% - 2rem) !important;
+        max-width: 100%;
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    /* Input Sizes */
+    input, select, textarea {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        padding: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.9375rem;
+        min-height: 48px;
+    }
+
+    /* Charts */
+    .chart-container {
+        height: 200px !important;
+    }
+
+    /* Analytics */
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Assistant Chat */
+    .chat-container {
+        height: calc(100vh - 180px);
+    }
+
+    .chat-message {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .chat-input-container {
+        padding: 0.75rem;
+    }
+
+    /* Settings */
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .setting-info {
+        width: 100%;
+    }
+
+    /* Heatmap */
+    .heatmap-grid {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .heatmap-cell {
+        width: 24px;
+        height: 24px;
+        font-size: 0.625rem;
+    }
+
+    /* Quick Add Task */
+    .quick-add-task {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .quick-add-task input {
+        width: 100%;
+    }
+
+    .quick-add-task .btn {
+        width: 100%;
+    }
+}
+
+/* ========== PHONES & PHABLETS (481-768px) ========== */
+@media (min-width: 481px) and (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+
+    .main-content {
+        margin-left: 240px;
+        padding: var(--spacing-md);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tasks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .focus-circle {
+        width: 220px;
+        height: 220px;
+    }
+
+    .chart-container {
+        height: 220px !important;
+    }
+}
+
+/* ========== TABLETS (769-1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .main-content {
+        margin-left: 260px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .tasks-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========== LANDSCAPE MODE ========== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .focus-circle {
+        width: 160px;
+        height: 160px;
+    }
+
+    .focus-time {
+        font-size: 2rem;
+    }
+
+    .chat-container {
+        height: calc(100vh - 140px);
+    }
+
+    .modal-content {
+        max-height: calc(100vh - 40px);
+    }
+}
+
+/* ========== TOUCH DEVICE ENHANCEMENTS ========== */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger Touch Targets */
+    button,
+    .btn,
+    .nav-item,
+    .habit-check,
+    .task-check,
+    .icon-option,
+    a,
+    .stat-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Enhanced Tap Feedback */
+    button:active,
+    .btn:active,
+    .nav-item:active,
+    .stat-card:active,
+    .habit-card:active,
+    .task-card:active {
+        transform: scale(0.97);
+        transition: transform 0.1s ease;
+    }
+
+    /* Remove Hover Effects */
+    *:hover {
+        /* Disable hover on touch devices */
+    }
+
+    /* Improve Scrolling */
+    .main-content,
+    .modal-content,
+    .chat-messages,
+    .habits-list {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* ========== SAFE AREA INSETS (Notched Devices) ========== */
+@supports (padding: max(0px)) {
+    body {
+        padding-top: max(0px, env(safe-area-inset-top));
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+
+    .sidebar {
+        padding-top: max(var(--spacing-md), env(safe-area-inset-top));
+        padding-bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+    }
+
+    .top-bar {
+        padding-top: max(var(--spacing-md), calc(env(safe-area-inset-top) + 0.5rem));
+    }
+
+    .install-banner,
+    .menu-toggle {
+        bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px));
+    }
+
+    .chat-input-container {
+        padding-bottom: max(var(--spacing-md), calc(env(safe-area-inset-bottom) + 0.75rem));
+    }
+}
+
+/* ========== PROFESSIONAL ALIGNMENT & SPACING ========== */
+@media (max-width: 768px) {
+    /* Consistent Spacing */
+    .widget,
+    .stat-card,
+    .habit-card,
+    .task-card {
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Perfect Alignment */
+    .flex-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Text Truncation */
+    .habit-name,
+    .task-title,
+    .stat-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Icon Sizes */
+    .habit-icon-display svg,
+    .task-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Badge Sizes */
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    /* Rounded Corners */
+    .glass-card,
+    .modal-content,
+    .btn,
+    input,
+    select {
+        border-radius: 12px;
+    }
+
+    /* Shadow Optimization */
+    .glass-card {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* ========== LOADING STATES ========== */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 25%,
+        var(--surface-glass) 50%,
+        var(--bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ========== ACCESSIBILITY ========== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .glass-card {
+        border-width: 2px;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+        outline-width: 3px;
+    }
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    .sidebar,
+    .top-bar,
+    .menu-toggle,
+    .install-banner,
+    .modal,
+    .btn {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .glass-card {
+        background: white;
+        border: 1px solid #000;
+    }
+}
+
+/* ========== ADDITIONAL MOBILE ENHANCEMENTS ========== */
+
+/* Pull-to-Refresh Prevention */
+body {
+    overscroll-behavior-y: contain;
+}
+
+/* Disable Text Selection on UI Elements */
+.btn,
+.nav-item,
+.habit-check,
+.task-check {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Improve Input Zoom Prevention */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="time"],
+    input[type="date"],
+    input[type="datetime-local"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Focus Visible for Keyboard Navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+/* Better Horizontal Scrolling */
+.scrollable-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollable-x::-webkit-scrollbar {
+    height: 4px;
+}
+
+.scrollable-x::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 2px;
+}
+
+/* Status Bar Color */
+meta[name="theme-color"] {
+    content: var(--accent-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+    meta[name="theme-color"] {
+        content: #0a0a0f;
+    }
+}
+
+/* Bottom Sheet Modal (Alternative for Mobile) */
+@media (max-width: 480px) {
+    .modal.bottom-sheet .modal-content {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        width: 100%;
+        max-height: 90vh;
+        border-radius: 24px 24px 0 0;
+        animation: slideUpModal 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUpModal {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Floating Action Button Style */
+.fab {
+    position: fixed;
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 20px));
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+.fab svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Snackbar/Toast Mobile Positioning */
+@media (max-width: 768px) {
+    .toast-container {
+        bottom: max(80px, calc(env(safe-area-inset-bottom) + 80px));
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 2rem);
+        max-width: 400px;
+    }
+
+    .toast {
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+    }
+}
+
+/* Card Hover Effects (Disabled on Touch) */
+@media (hover: hover) and (pointer: fine) {
+    .habit-card:hover,
+    .task-card:hover,
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.2);
+    }
+}
+
+/* Grid Auto-Fit for Responsiveness */
+@media (max-width: 768px) {
+    .auto-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Context Menu Mobile */
+@media (max-width: 768px) {
+    .context-menu {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 24px 24px 0 0;
+        max-height: 60vh;
+    }
+}
+
+/* Video/Media Responsiveness */
+video,
+iframe,
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Empty State Mobile */
+@media (max-width: 768px) {
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-state svg {
+        width: 80px;
+        height: 80px;
+    }
+
+    .empty-state h3 {
+        font-size: 1.125rem;
+    }
+
+    .empty-state p {
+        font-size: 0.875rem;
+    }
+}

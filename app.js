@@ -843,4 +843,49 @@ const App = {
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
+    
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    // Show menu toggle on mobile
+    function checkMobileView() {
+        if (window.innerWidth <= 480) {
+            menuToggle.style.display = 'flex';
+        } else {
+            menuToggle.style.display = 'none';
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+        }
+    }
+    
+    // Toggle sidebar on mobile
+    menuToggle?.addEventListener('click', () => {
+        sidebar.classList.toggle('mobile-open');
+        sidebarOverlay.classList.toggle('active');
+    });
+    
+    // Close sidebar when clicking overlay
+    sidebarOverlay?.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+    });
+    
+    // Close sidebar when clicking nav item on mobile
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 480) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+    
+    // Check on load and resize
+    checkMobileView();
+    window.addEventListener('resize', checkMobileView);
+    
+    // Create icons for mobile menu
+    lucide.createIcons();
 });

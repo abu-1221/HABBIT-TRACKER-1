@@ -7,6 +7,7 @@ const urlsToCache = [
   './components.css',
   './components2.css',
   './mobile.css',
+  './mobile-responsive.css',
   './auth.css',
   './app.js',
   './modules/storage.js',
