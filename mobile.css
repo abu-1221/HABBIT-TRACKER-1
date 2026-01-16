@@ -1,0 +1,332 @@
+/* ===== Mobile-Specific Enhancements ===== */
+
+/* Install Banner */
+.install-banner {
+    position: fixed;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    min-width: 320px;
+    max-width: 92%;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+    border: 1px solid var(--accent-primary);
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.install-content svg {
+    width: 32px;
+    height: 32px;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+.install-text {
+    flex: 1;
+}
+
+.install-text strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.install-text p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.install-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Enhanced Touch Targets for Mobile */
+@media (hover: none) and (pointer: coarse) {
+    /* All buttons get larger touch targets */
+    button, .btn, .nav-item, .habit-check, .task-check {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Increase tap feedback */
+    button:active, .btn:active {
+        transform: scale(0.95);
+        opacity: 0.9;
+    }
+    
+    .nav-item:active {
+        background: var(--surface-glass-hover);
+    }
+    
+    .habit-check:active, .task-check:active {
+        transform: scale(1.1);
+    }
+}
+
+/* Mobile-Optimized Form Inputs */
+input[type="time"], input[type="number"], input[type="text"], 
+input[type="email"], select, textarea {
+    font-size: 16px !important; /* Prevents zoom on focus in iOS */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Time input special styling */
+input[type="time"] {
+    padding: 0.75rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--surface-glass-border);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* Pull-to-Refresh Prevention */
+body {
+    overscroll-behavior-y: contain;
+}
+
+/* Safe Area Insets for Notched Devices */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+    
+    .sidebar {
+        padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+    }
+    
+    .top-bar {
+        padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+    }
+    
+    .install-banner {
+        bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+        padding-bottom: max(var(--spacing-md), calc(env(safe-area-inset-bottom) + 0.5rem));
+    }
+}
+
+/* Landscape Mode */
+@media (max-width: 768px) and (orientation: landscape) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .sidebar.collapsed {
+        width: 60px;
+    }
+    
+    .focus-circle, .timer-circle {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .loading-screen .ai-loader {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Better Scrolling for Mobile */
+.habits-list, .tasks-grid, .chat-messages {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Improve Modal Experience on Mobile */
+@media (max-width: 768px) {
+    .modal-content {
+        max-height: 85vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-content.settings-content {
+        max-height: 80vh;
+    }
+}
+
+/* Swipe Gesture Visual Feedback */
+.habit-card, .task-card {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Loading States for Better Mobile UX */
+.btn.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Haptic Feedback Visual Indicator */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.pulse-animation {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Optimize Charts for Mobile */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 180px !important;
+    }
+    
+    .chart-container.large {
+        height: 240px !important;
+    }
+}
+
+/* Bottom Navigation for Small Screens (Alternative) */
+@media (max-width: 480px) {
+    /* Keep sidebar collapsed by default on very small screens */
+    .sidebar:not(.mobile-open) {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Improve Focus Visible for Keyboard Navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+/* Dark Mode iOS Status Bar */
+@media (prefers-color-scheme: dark) {
+    meta[name="theme-color"] {
+        content: #0a0a0f;
+    }
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Fix iOS Input Shadow */
+input,
+select,
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Better Horizontal Scrolling */
+.heatmap-grid {
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+}
+
+.heatmap-grid::-webkit-scrollbar {
+    display: none;
+}
+
+/* Touch-Friendly Icon Picker */
+@media (max-width: 768px) {
+    .icon-option {
+        width: 52px;
+        height: 52px;
+    }
+    
+    .icon-option svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Sticky Headers on Mobile */
+@media (max-width: 768px) {
+    .widget-header {
+        position: sticky;
+        top: 0;
+        background: var(--bg-secondary);
+        z-index: 10;
+        padding: 0.75rem 0;
+        margin: -0.75rem 0 0.75rem;
+    }
+}
+
+/* Quick Tap Animation */
+@keyframes quickTap {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+}
+
+.quick-tap {
+    animation: quickTap 0.2s ease;
+}
